@@ -1,10 +1,10 @@
 import { Todo } from '../todos/models/todo.model';
 
 
- const Filters = { //se está generando un objeto llamado Filters y tiene 3 propiedades las cuales son All con su valor 'all', Completed con su valor 'Completed' y la tercera es Pending cuyo valor es 'Pending'
+ export const Filters = { //se está generando un objeto llamado Filters y tiene 3 propiedades las cuales son All con su valor 'all', Completed con su valor 'Completed' y la tercera es Pending cuyo valor es 'Pending'
     All: 'all', //propiedad 
     Completed: 'Completed', // propiedad
-    Pending: 'Pending' // propiedad
+    Pending: 'Pending', // propiedad
 }
 
 
@@ -24,14 +24,23 @@ import { Todo } from '../todos/models/todo.model';
 
  const initStore = () => { // sirve para indicar la inicialización del store
 
-    console.log(state);
+    loadStore();
     console.log('InitStore');
     
 }
 
 const loadStore = () => {
-    throw new Error ('No implementadoo');
+    if(!localStorage.getItem('state')) return;
+    const {todos =[], filter = Filters.All} =JSON.parse(localStorage.getItem('state'));
+    state.todos = todos;
+    state.filter = filter;
 }
+
+const saveStateToLocalStorage = () => {
+    localStorage.setItem('state', JSON.stringify(state));
+    
+}
+
 
 /**
  * 
@@ -57,6 +66,7 @@ const addTodo = (description) => { // se realiza una función llamada addTodo co
     
     if( description === false ) throw new Error ('Description is required');// se genera una condición if() donde si description está vacia se lanzará un error via consola donde se expecifica que se requiere la descripción
     state.todos.push (new Todo(description)); // se genera una referencia del objeto state referenciando la propieddad todos que es un arreglo y se llama el metodo push para ingresar un nuevo elemento a dicho arreglo cuyo valor del push se crea generando una nueva instancia de la clase Todo
+    saveStateToLocalStorage();
 }   
 /**
  * 
@@ -69,20 +79,24 @@ const toggleTodo = (todoId) => { //se genera la función toggleTodo con el param
         }
         return todo; // al final la condición retorna el todo 
     });
+    saveStateToLocalStorage()
 }
 
 
 const deleteTodo = (todoId) => { // se genera la función deleteTodo solicitando el parametro todoId le cual funciona para borrar un todo a partir del id dado
-    state.todos = state.todos.filter(todo=> todo.id !==todoId) // aqui se invoca la propiedad todos del objeto state que es igual a la propiedad todos que es un arreglo del objeto state y se llama la propiedad filter el cual funciona en que se retorne todos los id que sean diferentes al id ingresado
+    state.todos = state.todos.filter(todo=> todo.id !== todoId) // aqui se invoca la propiedad todos del objeto state que es igual a la propiedad todos que es un arreglo del objeto state y se llama la propiedad filter el cual funciona en que se retorne todos los id que sean diferentes al id ingresado
+    saveStateToLocalStorage()
 }
 
 
 const deletedCompleted = () => {
-    state.todos = state.todos.filter(todo=> todo.done)//se genera la función deleteCompleted que funciona para eliminar todos los todos qu tengan como estado completdo, es decir que como en la función deleteTodo se retorna todos los id que tengan como estado pendiente o estado false
+    state.todos = state.todos.filter(todo=> !todo.done)//se genera la función deleteCompleted que funciona para eliminar todos los todos qu tengan como estado completdo, es decir que como en la función deleteTodo se retorna todos los id que tengan como estado pendiente o estado false
+    saveStateToLocalStorage()
 }
 
 const setFilter = (newFilter = Filters.All) => { // se genera función setFilter el cual tiene como parametro newFilter igual a Filters.All el cual hace refencia a que se listen todos por defecto y tiene como regla que el valor que ingresemos sea de valor filter
-    state.filter = newFilter; 
+    state.filter = newFilter;
+    saveStateToLocalStorage() 
 }
 
 const getCurrentFilter = () => { //se genera una función getCurrentFilter el cual no pide parametros y retorna el filtro por defecto el cual es All

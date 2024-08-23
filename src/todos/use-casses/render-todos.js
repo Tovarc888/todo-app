@@ -12,9 +12,9 @@ let element;
 export const renderTodos = (elemntId, todos = []) => { // se genera la función renderTodos la cual tiene como element id que hace referencia a al elemento html y todos 
 
     if(!element) //Si el elemento no existe entonces...
-        element = document.querySelector(elemntId); // se invoca variable element y es igual a  la variable document y llamando su metodo querySelector y seleciona los elementos html que se están enviando por medio del parametro elemntId
+        element = document.querySelector(elemntId); // se invoca variable element y es igual a  la variable document y llamando su metodo querySelector y seleciona el elemento html que se están enviando por medio del parametro elemntId
     if (!element) throw new Error(`Element ${elemntId} not found`); //se realiza condicion si el element existe y si no enviar error por consola mencionando que no fue encontrado el elemento
-    
+    element.innerHTML='';//se reliza la pausa del render ya que por el contrario se crearian los mismos cada vez que se cree uno nuevo
 
 todos.forEach(todo => {
     element.append(createTodoHTML(todo)); //se están creando las tareas por medio de esta linea
