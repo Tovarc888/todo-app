@@ -52,9 +52,9 @@ const getTodos = (filter = Filters.All) =>{ // se genera función con flecha gor
         case Filters.All:
             return [...state.todos];//en el primer caso Filters.All se retorna todos los elementos del array en un nuevo arreglo
         case Filters.Completed:
-            return state.todos.filter(todo => !todo.done); //en el segundo caso Filters.Completed se llama por medio del array todos el metodo filter cuya función es devolver un array a partir de una condición y la condición en este caso es que si en la nueva instancia Todo la propiedad .done es true ya que en el momento en que se creo el constructor esta propiedad nace como false es decir NO COMPLETA
+            return state.todos.filter(todo => todo.done); //en el segundo caso Filters.Completed se llama por medio del array todos el metodo filter cuya función es devolver un array a partir de una condición y la condición en este caso es que si en la nueva instancia Todo la propiedad .done es true ya que en el momento en que se creo el constructor esta propiedad nace como false es decir NO COMPLETA
         case Filters.Pending:
-            return state.todos.filter (todo =>  todo.done === false); //En el tercer caso Filters.Pending se llama por medio del array todos el metodo filter cuya función es devolver un array a partir de una condición y la condición en este caso es que si la la nueva instancia Todo la propiedad .done es false entonces este todo está pendiente por hacer 
+            return state.todos.filter (todo => todo.done === false); //En el tercer caso Filters.Pending se llama por medio del array todos el metodo filter cuya función es devolver un array a partir de una condición y la condición en este caso es que si la la nueva instancia Todo la propiedad .done es false entonces este todo está pendiente por hacer 
         default:
         throw new Error(`Option ${filter} is not valid.`); // Este throw new Error es por si el valor del filter que se ha enviado no existe y se muestra un mensaje en la consola
         
